@@ -1,4 +1,4 @@
-package main
+package gemini
 
 import (
 	"context"
@@ -7,12 +7,17 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 	"github.com/google/generative-ai-go/genai"
 	"github.com/joho/godotenv"
 	"github.com/line/line-bot-sdk-go/v8/linebot/messaging_api"
 	"github.com/line/line-bot-sdk-go/v8/linebot/webhook"
 	"google.golang.org/api/option"
 )
+
+func init() {
+	functions.HTTP("gemini", callback)
+}
 
 func gemini(s string) string {
 	ctx := context.Background()
