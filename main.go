@@ -59,6 +59,17 @@ func callback(w http.ResponseWriter, r *http.Request) {
 		case webhook.MessageEvent:
 			switch message := e.Message.(type) {
 			case webhook.TextMessageContent:
+				switch source := e.Source.(type) {
+				case webhook.UserSource:
+					if _, err = bot.ShowLoadingAnimation(
+						&messaging_api.ShowLoadingAnimationRequest{
+							ChatId:         source.UserId,
+							LoadingSeconds: 30,
+						},
+					); err != nil {
+						log.Print(err)
+					}
+				}
 				if _, err = bot.ReplyMessage(
 					&messaging_api.ReplyMessageRequest{
 						ReplyToken: e.ReplyToken,
